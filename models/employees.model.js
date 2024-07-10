@@ -1,23 +1,23 @@
 const db = require("../config/db");
 
 const getAllEmployees = async (companyId) => {
-  const query = `SELECT * FROM employee WHERE companyI=${companyId}`;
-
-  try {
-    const result = await new Promise((resolve, reject) => {
-      db.query(query, (err, result) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(result);
+    const query = `SELECT * FROM employee WHERE companyId=${companyId}`;
+  
+    try {
+      const result = await new Promise((resolve, reject) => {
+        db.query(query, (err, result) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(result);
+        });
       });
-    });
-    return result;
-  } catch (err) {
-    console.error("Error fetching employees:", err);
-    throw err; // Re-throw the error to handle it in the controller
-  }
-};
+      return result;
+    } catch (err) {
+      console.error("Error fetching employees:", err);
+      throw err; // Re-throw the error to handle it in the controller
+    }
+  };
 
 const addNewEmployee = async (employeeName, mobile, role, companyId) => {
   const query = `INSERT INTO employee (employeeName, mobile, role, companyId) VALUES ("${employeeName}", "${mobile}", "${role}", ${companyId})`;
@@ -39,7 +39,7 @@ const addNewEmployee = async (employeeName, mobile, role, companyId) => {
 };
 
 const deleteAllEmployees = async (companyId) => {
-  const query = `DELETE FROM employee WHERE companyId=${companyId} AND role="user"`;
+  const query = `DELETE FROM employee WHERE companyId=${2} AND role="user"`;
 
   try {
     const result = await new Promise((resolve, reject) => {

@@ -8,7 +8,7 @@ const generateToken = (user) => {
       companyId: user.companyId
     };
   
-    return jwt.sign(payload, 'abcdefg', { expiresIn: '1d' });
+    return jwt.sign(payload, "abcdefg", { expiresIn: '1d' });
 };
 
 module.exports = generateToken;

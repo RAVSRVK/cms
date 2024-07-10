@@ -1,15 +1,21 @@
 const db = require("../config/db");
 
 const query = (sql, args) => {
-    return new Promise((resolve, reject) => {
-      db.query(sql, args, (err, results) => {
-        if (err) {
-            console.log(err);
-          return reject(err);
-        }
-        resolve(results);
-      });
-    });
+    try {
+        const result = new Promise((resolve, reject) => {
+            db.query(sql, args, (err, results) => {
+              if (err) {
+                  console.log(err);
+                return reject(err);
+              }
+              resolve(results);
+            });
+          });
+          return result    
+    } catch (error) {
+        console.error("Error fetching employees:", err);
+        throw err;
+    }
   };
 
 const getIndividualEmployee = (id) => {
@@ -20,9 +26,12 @@ const deleteIndividualEmployee = (id) => {
     return query(`delete from employee where employeeId=${id}`)
 }
 
-// const updateIndividualEmployee = ()
+const updateIndividualEmployee = (queryString, id) => {
+    return query(`update employee  set ${queryString} where employeeId=${id}`)
+}
 
 module.exports = {
     getIndividualEmployee,
-    deleteIndividualEmployee
+    deleteIndividualEmployee,
+    updateIndividualEmployee
 }

@@ -1,4 +1,4 @@
-const { getIndividualEmployee, deleteIndividualEmployee } = require("../models/employee.model");
+const { getIndividualEmployee, deleteIndividualEmployee, updateIndividualEmployee } = require("../models/employee.model");
 
 const getEmployee= async(req,res) => {
     const {id}= req.params
@@ -8,19 +8,32 @@ const getEmployee= async(req,res) => {
         res.send(employeeDetail);
     } catch (error) {
         console.log(error);
+        res.status(500).json({message: "Error fetching employee", error: error.message})
     }
 }
 
-const updateEmployee = (req, res) => {
+const updateEmployee = async (req, res) => {
     const {id}= req.params
-    
+    const queryArr = []
+    for(const [k, v] of Object.entries(req.body)) {
+        queryArr.push(`${k} = "${v}"`);
+    }
+    try {
+        const updated = await updateIndividualEmployee(queryArr, id)
+        res.send("Updated Successfully");
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Update Failed", error: error.message})      
+    }
 }
 
 const deleteEmployee = async( req, res) => {
     const {id} = req.params
+    // delete the record and then identify
+    const isRecordExisting = await getIndividualEmployee(id)
+    console.log('isRecordExistingisRecordExisting', isRecordExisting);
     try {
        const deleted = await deleteIndividualEmployee(id)
-       console.log(deleted);
         res.send("Deleted Successfully")
     } catch (err) {
         console.log(err);
