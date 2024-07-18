@@ -4,8 +4,12 @@ const getEmployee= async(req,res) => {
     const {id}= req.params
     try {
         const employeeDetail = await getIndividualEmployee(id)
-        console.log(employeeDetail);
-        res.send(employeeDetail);
+        if(id===employeeDetail.employeeId){
+            res.send(employeeDetail);
+        }
+        else{
+            res.status(403).json({message: "No access to fetch others records"})
+        }
     } catch (error) {
         console.log(error);
         res.status(500).json({message: "Error fetching employee", error: error.message})
